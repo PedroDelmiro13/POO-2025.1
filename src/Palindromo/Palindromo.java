@@ -1,29 +1,34 @@
 package Palindromo;
 
+import java.text.Normalizer;
 import java.util.Scanner;
 
 public class Palindromo {
-    public static String isPalindrom(String s){
+    public static Boolean isPalindrom(String s){
         int n = s.length();
-        for(int i=0; i< n/2; i++){
-            for(int j=s.length()-1; j>i; j--){
-                if(Character.toLowerCase(s.charAt(j))!=Character.toLowerCase(s.charAt(i))){
-                    System.out.println("Não é um palindromo");
-                    return "falso";
-                }
-                System.out.println("É um palindromo");
+        for (int i = 0; i < n/2 ; i++) {
+            if (Character.toLowerCase(s.charAt(i)) != Character.toLowerCase(s.charAt(n - i - 1))) {
+                return false;
             }
         }
-        return s;
+        return true;
     }
-    public static void removeSpecialCharacters(String s){
-        String s1 = s.replaceAll("[^a-zA-Z0-9]","");
+    public static String removeSpecialCharacters(String s){
+        s = Normalizer.normalize(s, Normalizer.Form.NFD);
+        s = s.replaceAll("[^a-zA-Z0-9]","");
+        return s;
     }
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
+        System.out.println("Insira uma palavra ou frase para verificacão");
         String s = sc.nextLine();
-        removeSpecialCharacters(isPalindrom(s));
-        System.out.println(s);
+        String verificaAcento = removeSpecialCharacters(s);
+        if(isPalindrom(verificaAcento)){
+            System.out.println("É um palindromo");
+        }else{
+            System.out.println("Não é um palindromo");
+        }
+        System.out.println(removeSpecialCharacters(s));
         sc.close();
     }
 }
